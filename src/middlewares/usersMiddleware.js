@@ -9,7 +9,7 @@ export async function validateSignup (req, res, next) {
     const { error } = registerSchema.validate(newUser);
 
     if (error) {
-        return res.status(422).send(error.details[0].message);
+        return res.sendStatus(422);
     }
 
     try {
@@ -35,7 +35,7 @@ export async function validateLogin (req, res, next) {
     const { error } = loginSchema.validate(userData);
 
     if (error) {
-        return res.status(422).send(error.details[0].message);
+        return res.sendStatus(422);
     }
 
     try {
@@ -49,7 +49,6 @@ export async function validateLogin (req, res, next) {
         }
 
         res.locals.userId = dbUser[0].id;
-
         next();
     } catch (error) {
         console.log(error);
