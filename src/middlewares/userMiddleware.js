@@ -1,7 +1,7 @@
 import { compareSync } from "bcrypt";
 
 import connection from "../dbStrategy/postgres.js";
-import { loginSchema, registerSchema } from "../schemas/userSchemas.js";
+import { loginSchema, registerSchema } from "../schemas/userSchema.js";
 
 export async function validateSignup (req, res, next) {
     const newUser = req.body;
@@ -44,7 +44,7 @@ export async function validateLogin (req, res, next) {
             [userData.email.toLowerCase()]
         );
 
-        if (dbUser.length === 0 || !compareSync(userData.password, dbUser[0].password)) {
+        if (!dbUser.length || !compareSync(userData.password, dbUser[0].password)) {
             return res.sendStatus(401);
         }
 

@@ -21,3 +21,24 @@ export async function shortenUrl (req, res) {
         res.sendStatus(500);
     }
 }
+
+export async function getUrl (req, res) {
+    const id = parseInt(req.params.id);
+
+    try {
+        const { rows: dbUrl } = await connection.query(`
+        SELECT "id", "url", "shortUrl"
+        FROM "urls"
+        WHERE id = $1
+        `, [id]);
+
+        if (!dbUrl.length) {
+            res.sendStatus(404);
+        }
+
+        res.status(200).send(dbUrl[0]);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
