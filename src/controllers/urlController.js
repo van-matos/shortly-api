@@ -42,3 +42,30 @@ export async function getUrl (req, res) {
         res.sendStatus(500);
     }
 }
+
+export async function openUrl (req, res) {
+    const shortUrl = req.params.shortUrl;
+
+    try {
+        const { rows: dbUrl } = await connection.query(`
+            SELECT *
+            FROM "urls"
+            WHERE "shortUrl" = $1
+        `, [shortUrl]);
+
+        if (!dbUrl.length) {
+            return res.sendStatus(404);
+        }
+
+        await connection.query(`
+            UPDATE "urls"
+            SET "views" = "views" + 1
+            WHERE "id" = $1
+        `, [dbUrl[0].id]);
+
+        return res.redirect(dbUrl[0].url);
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(500);
+    }
+}

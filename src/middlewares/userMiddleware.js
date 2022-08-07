@@ -39,9 +39,11 @@ export async function validateLogin (req, res, next) {
     }
 
     try {
-        const { rows: dbUser } = await connection.query(
-            `SELECT * FROM users WHERE email = $1`,
-            [userData.email.toLowerCase()]
+        const { rows: dbUser } = await connection.query(`
+            SELECT * 
+            FROM users 
+            WHERE email = $1
+            `, [userData.email.toLowerCase()]
         );
 
         if (!dbUser.length || !compareSync(userData.password, dbUser[0].password)) {
