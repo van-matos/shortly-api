@@ -27,10 +27,11 @@ export async function getUrl (req, res) {
 
     try {
         const { rows: dbUrl } = await connection.query(`
-        SELECT "id", "url", "shortUrl"
-        FROM "urls"
-        WHERE id = $1
-        `, [id]);
+            SELECT "id", "url", "shortUrl"
+            FROM "urls"
+            WHERE id = $1
+            `, [id]
+        );
 
         if (!dbUrl.length) {
             res.sendStatus(404);
@@ -51,7 +52,8 @@ export async function openUrl (req, res) {
             SELECT *
             FROM "urls"
             WHERE "shortUrl" = $1
-        `, [shortUrl]);
+            `, [shortUrl]
+        );
 
         if (!dbUrl.length) {
             return res.sendStatus(404);
@@ -67,5 +69,22 @@ export async function openUrl (req, res) {
     } catch (error) {
         console.log(error);
         return res.sendStatus(500);
+    }
+}
+
+export async function deleteUrl (req, res) {
+    const id = parseInt(req.params.id);
+
+    try {
+        await connection.query(`
+            DELETE FROM "urls"
+            WHERE "id" = $1
+            `, [id]
+        );
+
+        res.sendStatus(204);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
     }
 }
