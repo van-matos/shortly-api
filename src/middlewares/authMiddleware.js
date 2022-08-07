@@ -1,7 +1,7 @@
 import { compareSync } from "bcrypt";
 
 import connection from "../dbStrategy/postgres.js";
-import { loginSchema, registerSchema } from "../schemas/userSchema.js";
+import { loginSchema, registerSchema } from "../schemas/authSchema.js";
 
 export async function validateSignup (req, res, next) {
     const newUser = req.body;
