@@ -48,7 +48,7 @@ export async function rankUsers (req, res) {
             ON urls."userId" = users.id
             GROUP BY users.id
             ORDER BY "visitCount" DESC
-            LIMIT 3
+            LIMIT 10
         `);
 
         res.send(dbUsers).status(200);
