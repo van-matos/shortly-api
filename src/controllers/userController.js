@@ -8,7 +8,7 @@ export async function getUser (req, res) {
             SELECT 
                 users.id as id,
                 users.name as name,
-                COALESCE(SUM(urls."views"), 0) as "visitCount",
+                COALESCE(SUM(urls.views), 0) as "visitCount",
                 COALESCE(json_agg(json_build_object(
                     'id', urls.id,
                     'url', urls.url,
@@ -42,7 +42,7 @@ export async function rankUsers (req, res) {
                 users.id as id,
                 users.name as name,
                 COUNT(urls."userId") as "linksCount",
-                COALESCE(SUM(urls."views"), 0) as "visitCount"
+                COALESCE(SUM(urls.views), 0) as "visitCount"
             FROM users 
             LEFT JOIN urls
             ON urls."userId" = users.id

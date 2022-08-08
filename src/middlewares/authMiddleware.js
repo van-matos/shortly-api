@@ -18,7 +18,7 @@ export async function validateSignup (req, res, next) {
             [newUser.email.toLowerCase()]
         );
 
-        if (verifyEmail.length > 0) {
+        if (verifyEmail.length) {
             return res.sendStatus(409);
         }
 

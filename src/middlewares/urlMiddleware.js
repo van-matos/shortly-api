@@ -20,8 +20,8 @@ export async function validateUrlUser (req, res, next) {
     try {
         const { rows: dbUrl } = await connection.query(`
             SELECT *
-            FROM "urls"
-            WHERE "id" = $1
+            FROM urls
+            WHERE id = $1
             `, [id]
         );
 

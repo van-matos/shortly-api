@@ -10,7 +10,7 @@ export async function shortenUrl (req, res) {
 
     try {
         await connection.query(`
-            INSERT INTO "urls" ("url", "shortUrl", "userId", "views")
+            INSERT INTO urls (url, "shortUrl", "userId", views)
             VALUES ($1, $2, $3, $4)
             `, [url, shortUrl, userId, 0]
         );
@@ -27,7 +27,7 @@ export async function getUrl (req, res) {
 
     try {
         const { rows: dbUrl } = await connection.query(`
-            SELECT "id", "url", "shortUrl"
+            SELECT id, url, "shortUrl"
             FROM "urls"
             WHERE id = $1
             `, [id]
@@ -50,7 +50,7 @@ export async function openUrl (req, res) {
     try {
         const { rows: dbUrl } = await connection.query(`
             SELECT *
-            FROM "urls"
+            FROM urls
             WHERE "shortUrl" = $1
             `, [shortUrl]
         );
@@ -60,9 +60,9 @@ export async function openUrl (req, res) {
         }
 
         await connection.query(`
-            UPDATE "urls"
-            SET "views" = "views" + 1
-            WHERE "id" = $1
+            UPDATE urls
+            SET views = views + 1
+            WHERE id = $1
         `, [dbUrl[0].id]);
 
         return res.redirect(dbUrl[0].url);
@@ -77,8 +77,8 @@ export async function deleteUrl (req, res) {
 
     try {
         await connection.query(`
-            DELETE FROM "urls"
-            WHERE "id" = $1
+            DELETE FROM urls
+            WHERE id = $1
             `, [id]
         );
 
